@@ -7,4 +7,67 @@ datasource db {
   provider  = "postgresql"
 }
 
+enum USER_ROLE {
+  CITIZEN
+  ADMIN
+  STAFF
+}
+
+
+model User {
+  id  String  @id @default(uuid())
+  name  String
+  email  String @unique
+  password  String
+  role    USER_ROLE
+
+  requests  Request[] @relation("UserRequest")
+
+  created_at  DateTime  @default(now())
+}
+
+enum CATEGORY_PRIORITY {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+model Category {
+  id    String    @id   @default(uuid())
+  name  String
+  priority  CATEGORY_PRIORITY @default(MEDIUM)
+
+  requests  Request[] @relation("RequestCategory")
+
+  created_at    DateTime    @default(now())
+}
+
+enum CONDITION{
+  OPEN
+  RESOLVED
+}
+
+model Request {
+  id  String @id @default(uuid())
+  title String
+  description String
+
+  condition CONDITION @default(RESOLVED)
+
+  categoryId  String
+  category  Category  @relation("RequestCategory", fields: [categoryId], references: [id])
+
+  userId  String
+  user  User  @relation("UserRequest", fields: [userId], references: [id])  
+
+  comments  Comment[] @relation("RequestComment")
+}
+
+model Comment {
+  id  String  @id @default(uuid())
+  comment String
+
+  requestId  String
+  request  Request  @relation("RequestComment", fields: [requestId], references: [id])
+}
 

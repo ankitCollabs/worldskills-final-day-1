@@ -1,9 +1,19 @@
 import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs";
+import { checkAdmin } from "@/middleware/get-userId";
 
-export async function POST(req:Request){
-    const body = await req.json();
-    
+export async function GET(req: Request){
+    const {isAdmin, user} = await checkAdmin(req);
 
-    return new Response("Route Working perfectly!", {status: 200})
+    if(!isAdmin){
+        return Response.json({
+            success: false,
+            message: "You are not an admin"
+        })
+    }
+
+    const users = await prisma.user.findMany({})
+    return Response.json({
+        success: true,
+        data:users
+    })
 }

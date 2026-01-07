@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+
+.cloud-travel {
+    animation: animate-cloud 100000ms infinite;
+}
+
+@keyframes animate-cloud {
+    0% {
+        transform: translateX(-100px);
+    }
+
+
+    
+    50% {
+        transform: translateX(-1000px);
+    }
+    
+    100%{
+        transform: translateX(-100px);
+    }
+   
+}

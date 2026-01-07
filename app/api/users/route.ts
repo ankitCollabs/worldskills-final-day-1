@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 export async function POST(req:Request){
